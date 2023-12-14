@@ -1,6 +1,6 @@
+use crate::hue::devices_response::DevicesResponse;
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::Client;
-use serde_json::Value;
 use std::env;
 use std::env::VarError;
 use thiserror::Error;
@@ -18,15 +18,14 @@ impl HueClient {
         })
     }
 
-    pub async fn fetch_devices(&self) -> Result<Value, HueClientError> {
+    pub async fn fetch_devices(&self) -> Result<DevicesResponse, HueClientError> {
         let response = self
             .client
             .get(format!("https://{}/clip/v2/resource", self.endpoint))
             .send()
             .await?
-            .json::<Value>()
+            .json::<DevicesResponse>()
             .await?;
-        eprintln!("response = {:#?}", response);
         Ok(response)
     }
 
