@@ -6,22 +6,21 @@ use std::error::Error;
 
 pub struct HueClient {
     client: Client,
+    endpoint: String,
 }
 
 impl HueClient {
     pub fn new() -> Result<HueClient, Box<dyn Error>> {
         Ok(HueClient {
             client: HueClient::http_client()?,
+            endpoint: env::var("HUE_ENDPOINT")?,
         })
     }
 
     pub async fn fetch_devices(&self) -> Result<Value, Box<dyn Error>> {
         let response = self
             .client
-            .get(format!(
-                "https://{}/clip/v2/resource",
-                env::var("HUE_ENDPOINT")?
-            ))
+            .get(format!("https://{}/clip/v2/resource", self.endpoint))
             .send()
             .await?
             .json::<Value>()
