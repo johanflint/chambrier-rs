@@ -43,7 +43,7 @@ pub struct Device {
 
 #[derive(Deserialize, Debug)]
 pub struct DeviceMetadata {
-    archetype: String,
+    archetype: Archetype,
     name: String,
 }
 
@@ -52,7 +52,7 @@ pub struct ProductData {
     model_id: String,
     manufacturer_name: String,
     product_name: String,
-    product_archetype: String,
+    product_archetype: Archetype,
     certified: bool,
     software_version: String,
 }
@@ -61,4 +61,50 @@ pub struct ProductData {
 pub struct ResourceIdentifierGet {
     rid: String,
     rtype: String,
+}
+
+#[derive(Deserialize, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum Archetype {
+    Bollard,
+    BridgeV2,
+    CandleBulb,
+    CeilingRound,
+    CeilingSquare,
+    ChristmasTree,
+    ClassicBulb,
+    DoubleSpot,
+    FlexiableLamp,
+    FloodBulb,
+    FloorLantern,
+    FloorShade,
+    GroundSpot,
+    HueBloom,
+    HueCentris,
+    HueGo,
+    HueIris,
+    HueLightstrip,
+    HueLightstripTv,
+    HuePlay,
+    HueSigne,
+    HueTube,
+    LusterBulb,
+    PendantLong,
+    PendantRound,
+    Plug,
+    RecessedCeiling,
+    RecessedFloor,
+    SingleSpot,
+    SpotBulb,
+    SultanBulb,
+    TableShade,
+    TableWash,
+    UnknownArchetype,
+    VintageBulb,
+    WallLantern,
+    WallShade,
+    WallSpot,
+    WallWasher,
+    #[serde(other)]
+    UnrecognizedArchetype,
 }
