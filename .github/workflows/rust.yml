@@ -19,3 +19,8 @@ jobs:
         run: cargo build --verbose
       - name: Run tests
         run: cargo test --verbose
+      - name: Format with rustfmt
+        run: cargo fmt --all -- --check
+      - name: Fail if rustfmt errors found
+        if: ${{ steps.rustfmt-check.outcome == 'failure' }}
+        run: exit 1
