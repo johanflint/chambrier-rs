@@ -2,8 +2,21 @@ use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
 pub(crate) struct DevicesResponse {
-    pub(crate) errors: Vec<HueError>,
-    pub(crate) data: Vec<Resource>,
+    errors: Vec<HueError>,
+    data: Vec<Resource>,
+}
+
+impl DevicesResponse {
+    pub fn errors(self) -> Vec<HueError> {
+        self.errors
+    }
+
+    pub fn data(self) -> Vec<Resource> {
+        self.data
+            .into_iter()
+            .filter(|r| !matches!(r, Resource::Unknown))
+            .collect()
+    }
 }
 
 #[derive(Deserialize, Debug)]
