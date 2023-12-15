@@ -7,13 +7,13 @@ pub(crate) struct DevicesResponse {
 }
 
 impl DevicesResponse {
-    pub fn errors(self) -> Vec<HueError> {
-        self.errors
+    pub fn errors(&self) -> Vec<&HueError> {
+        self.errors.iter().collect()
     }
 
-    pub fn data(self) -> Vec<Resource> {
+    pub fn data(&self) -> Vec<&Resource> {
         self.data
-            .into_iter()
+            .iter()
             .filter(|r| !matches!(r, Resource::Unknown))
             .collect()
     }
