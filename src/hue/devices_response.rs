@@ -108,3 +108,25 @@ pub enum Archetype {
     #[serde(other)]
     UnrecognizedArchetype,
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::from_str;
+    use std::error::Error;
+    use std::fs;
+
+    #[test]
+    fn deserializes_a_response_with_data() -> Result<(), Box<dyn Error>> {
+        let response = fs::read_to_string("tests/resources/devices_response.json")?;
+        let response = from_str::<DevicesResponse>(&response)?;
+
+        let data = response.data();
+        let errors = response.errors();
+
+        assert_eq!(0, errors.len());
+        assert_eq!(1, data.len());
+
+        Ok(())
+    }
+}
