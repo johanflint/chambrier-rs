@@ -23,14 +23,14 @@ impl DevicesResponse {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct HueError {
+pub(crate) struct HueError {
     description: String,
 }
 
 #[derive(Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
 #[serde(tag = "type")]
-pub enum Resource {
+pub(crate) enum Resource {
     Device(DeviceGet),
     Light(LightGet),
     Button(ButtonGet),
@@ -39,7 +39,7 @@ pub enum Resource {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct DeviceGet {
+pub(crate) struct DeviceGet {
     id: String,
     metadata: DeviceMetadata,
     product_data: ProductData,
@@ -47,13 +47,13 @@ pub struct DeviceGet {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct DeviceMetadata {
+pub(crate) struct DeviceMetadata {
     archetype: Archetype,
     name: String,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct ProductData {
+pub(crate) struct ProductData {
     model_id: String,
     manufacturer_name: String,
     product_name: String,
@@ -63,7 +63,7 @@ pub struct ProductData {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct LightGet {
+pub(crate) struct LightGet {
     id: String,
     owner: ResourceIdentifierGet,
     on: On,
@@ -97,18 +97,18 @@ impl LightGet {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct On {
+pub(crate) struct On {
     on: bool,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Diming {
+pub(crate) struct Diming {
     brightness: f32,            // >= 0 && <= 100
     min_dim_level: Option<f32>, // >= 0 && <= 100
 }
 
 #[derive(Deserialize, Debug)]
-pub struct ColorTemperature {
+pub(crate) struct ColorTemperature {
     mirek: Option<usize>,
     mirek_valid: bool,
     mirek_schema: MirekSchema,
@@ -121,33 +121,33 @@ impl ColorTemperature {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct MirekSchema {
+pub(crate) struct MirekSchema {
     mirek_minimum: usize, // >= 153 && <= 500
     mirek_maximum: usize, // >= 153 && <= 500
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Color {
+pub(crate) struct Color {
     xy: Xy,
     gamut: Gamut,
     gamut_type: char, // A, B or C
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Xy {
+pub(crate) struct Xy {
     x: f32, // >= 0.0 && <= 1.0
     y: f32, // >= 0.0 && <= 1.0
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Gamut {
+pub(crate) struct Gamut {
     red: Xy,
     green: Xy,
     blue: Xy,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Dynamics {
+pub(crate) struct Dynamics {
     status: String,             // dynamic_pallette or none
     status_values: Vec<String>, // SupportedDynamicStatus
     speed: f32,                 // >= 0.0 && <= 1.0
@@ -155,12 +155,12 @@ pub struct Dynamics {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Alert {
+pub(crate) struct Alert {
     action_values: Vec<String>, // AlertEffectType
 }
 
 #[derive(Deserialize, Debug)]
-pub struct ButtonGet {
+pub(crate) struct ButtonGet {
     id: String,
     owner: ResourceIdentifierGet,
     metadata: ButtonMetadata,
@@ -168,12 +168,12 @@ pub struct ButtonGet {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct ButtonMetadata {
+pub(crate) struct ButtonMetadata {
     control_id: u8, // >= 0 && <= 8
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Button {
+pub(crate) struct Button {
     button_report: Option<ButtonReport>,
     repeat_interval: usize,
     event_values: Vec<ButtonEvent>,
@@ -190,14 +190,14 @@ impl Button {
 }
 
 #[derive(Deserialize, Debug)]
-pub struct ButtonReport {
+pub(crate) struct ButtonReport {
     updated: DateTime<Utc>,
     event: ButtonEvent,
 }
 
 #[derive(Deserialize, Copy, Clone, PartialEq, Debug)]
 #[serde(rename_all = "snake_case")]
-pub enum ButtonEvent {
+pub(crate) enum ButtonEvent {
     InitialPress,
     Repeat,
     ShortRelease,
@@ -207,14 +207,14 @@ pub enum ButtonEvent {
 }
 
 #[derive(Deserialize, PartialEq, Debug)]
-pub struct ResourceIdentifierGet {
+pub(crate) struct ResourceIdentifierGet {
     rid: String,
     rtype: String,
 }
 
 #[derive(Deserialize, PartialEq, Debug)]
 #[serde(rename_all = "snake_case")]
-pub enum Archetype {
+pub(crate) enum Archetype {
     Bollard,
     BridgeV2,
     CandleBulb,
