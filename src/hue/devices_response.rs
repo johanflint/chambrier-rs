@@ -209,7 +209,49 @@ pub(crate) enum ButtonEvent {
 #[derive(Deserialize, PartialEq, Debug)]
 pub(crate) struct ResourceIdentifierGet {
     rid: String,
-    rtype: String,
+    rtype: ResourceType,
+}
+
+#[derive(Deserialize, PartialEq, Debug)]
+#[serde(rename_all = "snake_case")]
+pub(crate) enum ResourceType {
+    AuthV1,
+    BehaviorInstance,
+    BehaviorScript,
+    Bridge,
+    BridgeHome,
+    Button,
+    CameraMotion,
+    Contact,
+    Device, // Manually added based on data
+    DevicePower,
+    DeviceSoftwareUpdate, // Manually added
+    Entertainment,
+    EntertainmentConfiguration,
+    Geofence,
+    GeofenceClient,
+    Geolocation,
+    GroupedLight,
+    Homekit,
+    Light,
+    LightLevel,
+    Matter,
+    MatterFabric,
+    Motion,
+    PublicImage,
+    RelativeRotary,
+    Room,
+    Scene,
+    SmartScene,
+    Tamper,
+    #[serde(rename = "taurus_7455")]
+    Taurus, // Manually added
+    Temperature,
+    ZgpConnectivity,
+    ZigbeeBridgeConnectivity,
+    ZigbeeConnectivity,
+    ZigbeeDeviceDiscovery,
+    Zone,
 }
 
 #[derive(Deserialize, PartialEq, Debug)]
@@ -304,19 +346,19 @@ mod tests {
                 vec![
                     ResourceIdentifierGet {
                         rid: "7a0ece11-0e2d-4bbf-b290-1d575b541533".to_string(),
-                        rtype: "zigbee_connectivity".to_string()
+                        rtype: ResourceType::ZigbeeConnectivity
                     },
                     ResourceIdentifierGet {
                         rid: "4e5ad66f-633e-4300-84cd-634129fdb451".to_string(),
-                        rtype: "light".to_string()
+                        rtype: ResourceType::Light
                     },
                     ResourceIdentifierGet {
                         rid: "5d25baca-11e6-4635-91e2-e4db0b538cc9".to_string(),
-                        rtype: "taurus_7455".to_string()
+                        rtype: ResourceType::Taurus
                     },
                     ResourceIdentifierGet {
                         rid: "64ac92d6-41b3-4f81-bd6d-315f01dc59c3".to_string(),
-                        rtype: "device_software_update".to_string()
+                        rtype: ResourceType::DeviceSoftwareUpdate
                     }
                 ],
                 device.services
@@ -338,7 +380,7 @@ mod tests {
             assert_eq!(
                 ResourceIdentifierGet {
                     rid: "90bdce60-3704-470e-be4c-8264f2bc8151".to_string(),
-                    rtype: "device".to_string()
+                    rtype: ResourceType::Device
                 },
                 light.owner
             );
@@ -399,7 +441,7 @@ mod tests {
             assert_eq!(
                 ResourceIdentifierGet {
                     rid: "e84075f8-023f-43e7-80ea-c0246fdf2835".to_string(),
-                    rtype: "device".to_string()
+                    rtype: ResourceType::Device
                 },
                 button.owner
             );
