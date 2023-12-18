@@ -1,5 +1,7 @@
 use serde::Deserialize;
 
+// Names come from the [Hue API v2](https://developers.meethue.com/develop/hue-api-v2/api-reference/#resource).
+
 #[derive(Deserialize, Debug)]
 pub(crate) struct DevicesResponse {
     errors: Vec<HueError>,
@@ -28,13 +30,13 @@ pub struct HueError {
 #[serde(rename_all = "camelCase")]
 #[serde(tag = "type")]
 pub enum Resource {
-    Device(Device),
+    Device(DeviceGet),
     #[serde(other)]
     Unknown,
 }
 
 #[derive(Deserialize, Debug)]
-pub struct Device {
+pub struct DeviceGet {
     id: String,
     metadata: DeviceMetadata,
     product_data: ProductData,
