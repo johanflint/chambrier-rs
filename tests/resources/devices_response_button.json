@@ -1,0 +1,146 @@
+{
+  "errors": [],
+  "data": [
+    {
+      "id": "e84075f8-023f-43e7-80ea-c0246fdf2835",
+      "id_v1": "/sensors/6",
+      "product_data": {
+        "model_id": "RWL021",
+        "manufacturer_name": "Signify Netherlands B.V.",
+        "product_name": "Hue dimmer switch",
+        "product_archetype": "unknown_archetype",
+        "certified": true,
+        "software_version": "1.1.28573",
+        "hardware_platform_type": "100b-109"
+      },
+      "metadata": {
+        "name": "Dimmer",
+        "archetype": "unknown_archetype"
+      },
+      "services": [
+        {
+          "rid": "b054d64c-d9a9-4101-8944-9aca440e6b07",
+          "rtype": "zigbee_connectivity"
+        },
+        {
+          "rid": "9ea998a8-c996-4a8b-a652-cb7baa9d26e5",
+          "rtype": "button"
+        },
+        {
+          "rid": "cee245f5-db5a-4876-980c-f32d958e2392",
+          "rtype": "button"
+        },
+        {
+          "rid": "6d9fc615-d0f9-4dc0-a8f7-6f77693c452b",
+          "rtype": "button"
+        },
+        {
+          "rid": "60e84b4b-cc69-4ff9-8da1-66331a6fa477",
+          "rtype": "button"
+        },
+        {
+          "rid": "92ee5dcb-244c-438e-8afc-cc27a0ad1cee",
+          "rtype": "device_power"
+        },
+        {
+          "rid": "88546e1c-51d2-4496-af0d-250823e202f8",
+          "rtype": "device_software_update"
+        }
+      ],
+      "type": "device"
+    },
+    {
+      "id": "9ea998a8-c996-4a8b-a652-cb7baa9d26e5",
+      "id_v1": "/sensors/6",
+      "owner": {
+        "rid": "e84075f8-023f-43e7-80ea-c0246fdf2835",
+        "rtype": "device"
+      },
+      "metadata": {
+        "control_id": 1
+      },
+      "button": {
+        "repeat_interval": 800,
+        "event_values": [
+          "initial_press",
+          "repeat",
+          "short_release",
+          "long_release",
+          "long_press"
+        ]
+      },
+      "type": "button"
+    },
+    {
+      "id": "cee245f5-db5a-4876-980c-f32d958e2392",
+      "id_v1": "/sensors/6",
+      "owner": {
+        "rid": "e84075f8-023f-43e7-80ea-c0246fdf2835",
+        "rtype": "device"
+      },
+      "metadata": {
+        "control_id": 2
+      },
+      "button": {
+        "last_event": "short_release",
+        "button_report": {
+          "updated": "1970-01-01T00:00:00.000Z",
+          "event": "short_release"
+        },
+        "repeat_interval": 800,
+        "event_values": [
+          "initial_press",
+          "repeat",
+          "short_release",
+          "long_release",
+          "long_press"
+        ]
+      },
+      "type": "button"
+    },
+    {
+      "id": "6d9fc615-d0f9-4dc0-a8f7-6f77693c452b",
+      "id_v1": "/sensors/6",
+      "owner": {
+        "rid": "e84075f8-023f-43e7-80ea-c0246fdf2835",
+        "rtype": "device"
+      },
+      "metadata": {
+        "control_id": 3
+      },
+      "button": {
+        "repeat_interval": 800,
+        "event_values": [
+          "initial_press",
+          "repeat",
+          "short_release",
+          "long_release",
+          "long_press"
+        ]
+      },
+      "type": "button"
+    },
+    {
+      "id": "60e84b4b-cc69-4ff9-8da1-66331a6fa477",
+      "id_v1": "/sensors/6",
+      "owner": {
+        "rid": "e84075f8-023f-43e7-80ea-c0246fdf2835",
+        "rtype": "device"
+      },
+      "metadata": {
+        "control_id": 4
+      },
+      "button": {
+        "repeat_interval": 800,
+        "event_values": [
+          "initial_press",
+          "repeat",
+          "short_release",
+          "long_release",
+          "long_press"
+        ]
+      },
+      "type": "button"
+    }
+  ]
+}

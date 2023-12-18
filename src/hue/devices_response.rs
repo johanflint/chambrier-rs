@@ -1,3 +1,4 @@
+use chrono::{DateTime, Utc};
 use serde::Deserialize;
 
 // Names come from the [Hue API v2](https://developers.meethue.com/develop/hue-api-v2/api-reference/#resource).
@@ -32,6 +33,7 @@ pub struct HueError {
 pub enum Resource {
     Device(DeviceGet),
     Light(LightGet),
+    Button(ButtonGet),
     #[serde(other)]
     Unknown,
 }
@@ -157,6 +159,53 @@ pub struct Alert {
     action_values: Vec<String>, // AlertEffectType
 }
 
+#[derive(Deserialize, Debug)]
+pub struct ButtonGet {
+    id: String,
+    owner: ResourceIdentifierGet,
+    metadata: ButtonMetadata,
+    button: Button,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ButtonMetadata {
+    control_id: u8, // >= 0 && <= 8
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Button {
+    button_report: Option<ButtonReport>,
+    repeat_interval: usize,
+    event_values: Vec<ButtonEvent>,
+}
+
+impl Button {
+    pub fn button_report(&self) -> Option<&ButtonReport> {
+        self.button_report.as_ref()
+    }
+
+    pub fn event_values(&self) -> Vec<ButtonEvent> {
+        self.event_values.clone()
+    }
+}
+
+#[derive(Deserialize, Debug)]
+pub struct ButtonReport {
+    updated: DateTime<Utc>,
+    event: ButtonEvent,
+}
+
+#[derive(Deserialize, Copy, Clone, PartialEq, Debug)]
+#[serde(rename_all = "snake_case")]
+pub enum ButtonEvent {
+    InitialPress,
+    Repeat,
+    ShortRelease,
+    LongRelease,
+    DoubleShortRelease,
+    LongPress,
+}
+
 #[derive(Deserialize, PartialEq, Debug)]
 pub struct ResourceIdentifierGet {
     rid: String,
@@ -218,7 +267,7 @@ mod tests {
 
     #[test]
     fn deserializes_a_response_with_data() -> Result<(), Box<dyn Error>> {
-        let response = fs::read_to_string("tests/resources/devices_response.json")?;
+        let response = fs::read_to_string("tests/resources/devices_response_light.json")?;
         let response = from_str::<DevicesResponse>(&response)?;
 
         let data = response.data();
@@ -232,7 +281,7 @@ mod tests {
 
     #[test]
     fn deserializes_a_device() -> Result<(), Box<dyn Error>> {
-        let response = fs::read_to_string("tests/resources/devices_response.json")?;
+        let response = fs::read_to_string("tests/resources/devices_response_light.json")?;
         let response = from_str::<DevicesResponse>(&response)?;
 
         if let Resource::Device(device) = response.data()[0] {
@@ -281,7 +330,7 @@ mod tests {
 
     #[test]
     fn deserializes_a_light() -> Result<(), Box<dyn Error>> {
-        let response = fs::read_to_string("tests/resources/devices_response.json")?;
+        let response = fs::read_to_string("tests/resources/devices_response_light.json")?;
         let response = from_str::<DevicesResponse>(&response)?;
 
         if let Resource::Light(light) = response.data()[1] {
@@ -329,6 +378,60 @@ mod tests {
             assert_eq!(false, light.dynamics().unwrap().speed_valid);
         } else {
             assert!(false, "data[1] is not a Resource::Light");
+        }
+
+        Ok(())
+    }
+
+    #[test]
+    fn deserializes_a_button() -> Result<(), Box<dyn Error>> {
+        let response = fs::read_to_string("tests/resources/devices_response_button.json")?;
+        let response = from_str::<DevicesResponse>(&response)?;
+
+        let data = response.data();
+        let errors = response.errors();
+
+        assert_eq!(0, errors.len());
+        assert_eq!(5, data.len()); // Device and 4 buttons
+
+        if let Resource::Button(button) = data[1] {
+            assert_eq!("9ea998a8-c996-4a8b-a652-cb7baa9d26e5", button.id);
+            assert_eq!(
+                ResourceIdentifierGet {
+                    rid: "e84075f8-023f-43e7-80ea-c0246fdf2835".to_string(),
+                    rtype: "device".to_string()
+                },
+                button.owner
+            );
+            assert_eq!(1, button.metadata.control_id);
+            assert!(button.button.button_report.is_none());
+            assert_eq!(800, button.button.repeat_interval);
+            assert_eq!(
+                vec![
+                    ButtonEvent::InitialPress,
+                    ButtonEvent::Repeat,
+                    ButtonEvent::ShortRelease,
+                    ButtonEvent::LongRelease,
+                    ButtonEvent::LongPress
+                ],
+                button.button.event_values()
+            );
+        } else {
+            assert!(false, "data[1] is not a Resource::Button");
+        }
+
+        if let Resource::Button(button) = data[2] {
+            assert_eq!("cee245f5-db5a-4876-980c-f32d958e2392", button.id);
+            assert_eq!(
+                DateTime::UNIX_EPOCH,
+                button.button.button_report().unwrap().updated
+            );
+            assert_eq!(
+                ButtonEvent::ShortRelease,
+                button.button.button_report().unwrap().event
+            );
+        } else {
+            assert!(false, "data[2] is not a Resource::Button");
         }
 
         Ok(())
