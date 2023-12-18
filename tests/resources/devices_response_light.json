@@ -1,0 +1,146 @@
+{
+  "errors": [],
+  "data": [
+    {
+      "id": "90bdce60-3704-470e-be4c-8264f2bc8151",
+      "id_v1": "/lights/25",
+      "product_data": {
+        "model_id": "LWA021",
+        "manufacturer_name": "Signify Netherlands B.V.",
+        "product_name": "Hue filament bulb",
+        "product_archetype": "vintage_bulb",
+        "certified": true,
+        "software_version": "1.104.2",
+        "hardware_platform_type": "100b-114"
+      },
+      "metadata": {
+        "name": "Light",
+        "archetype": "vintage_bulb"
+      },
+      "identify": {},
+      "services": [
+        {
+          "rid": "7a0ece11-0e2d-4bbf-b290-1d575b541533",
+          "rtype": "zigbee_connectivity"
+        },
+        {
+          "rid": "4e5ad66f-633e-4300-84cd-634129fdb451",
+          "rtype": "light"
+        },
+        {
+          "rid": "5d25baca-11e6-4635-91e2-e4db0b538cc9",
+          "rtype": "taurus_7455"
+        },
+        {
+          "rid": "64ac92d6-41b3-4f81-bd6d-315f01dc59c3",
+          "rtype": "device_software_update"
+        }
+      ],
+      "type": "device"
+    },
+    {
+      "id": "4e5ad66f-633e-4300-84cd-634129fdb451",
+      "id_v1": "/lights/25",
+      "owner": {
+        "rid": "90bdce60-3704-470e-be4c-8264f2bc8151",
+        "rtype": "device"
+      },
+      "metadata": {
+        "name": "Light",
+        "archetype": "vintage_bulb",
+        "fixed_mired": 476,
+        "function": "decorative"
+      },
+      "product_data": {
+        "function": "decorative"
+      },
+      "identify": {},
+      "on": {
+        "on": true
+      },
+      "dimming": {
+        "brightness": 24.11,
+        "min_dim_level": 2.0
+      },
+      "dimming_delta": {},
+      "color_temperature": {
+        "mirek": null,
+        "mirek_valid": false,
+        "mirek_schema": {
+          "mirek_minimum": 153,
+          "mirek_maximum": 500
+        }
+      },
+      "color_temperature_delta": {},
+      "color": {
+        "xy": {
+          "x": 0.669,
+          "y": 0.3251
+        },
+        "gamut": {
+          "red": {
+            "x": 0.675,
+            "y": 0.322
+          },
+          "green": {
+            "x": 0.409,
+            "y": 0.518
+          },
+          "blue": {
+            "x": 0.167,
+            "y": 0.04
+          }
+        },
+        "gamut_type": "B"
+      },
+      "dynamics": {
+        "status": "none",
+        "status_values": [
+          "none"
+        ],
+        "speed": 0.0,
+        "speed_valid": false
+      },
+      "alert": {
+        "action_values": [
+          "breathe"
+        ]
+      },
+      "signaling": {
+        "signal_values": [
+          "no_signal",
+          "on_off"
+        ]
+      },
+      "mode": "normal",
+      "effects": {
+        "status_values": [
+          "no_effect",
+          "candle"
+        ],
+        "status": "candle",
+        "effect_values": [
+          "no_effect",
+          "candle"
+        ]
+      },
+      "powerup": {
+        "preset": "safety",
+        "configured": true,
+        "on": {
+          "mode": "on",
+          "on": {
+            "on": true
+          }
+        },
+        "dimming": {
+          "mode": "dimming",
+          "dimming": {
+            "brightness": 100.0
+          }
+        }
+      },
+      "type": "light"
+    }
+  ]
+}
