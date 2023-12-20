@@ -3,6 +3,7 @@ use std::error::Error;
 use crate::hue::client::HueClient;
 
 mod hue;
+mod model;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
