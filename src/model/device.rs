@@ -120,7 +120,7 @@ impl Common {
     }
 }
 
-#[derive(Debug)]
+#[derive(PartialEq, Debug)]
 pub enum PropertyType {
     BatteryLevel,
     Brightness,

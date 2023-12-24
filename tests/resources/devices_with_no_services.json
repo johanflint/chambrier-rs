@@ -1,0 +1,25 @@
+{
+  "errors": [],
+  "data": [
+    {
+      "id": "90bdce60-3704-470e-be4c-8264f2bc8151",
+      "id_v1": "/lights/25",
+      "product_data": {
+        "model_id": "LWA021",
+        "manufacturer_name": "Signify Netherlands B.V.",
+        "product_name": "Hue filament bulb",
+        "product_archetype": "vintage_bulb",
+        "certified": true,
+        "software_version": "1.104.2",
+        "hardware_platform_type": "100b-114"
+      },
+      "metadata": {
+        "name": "Light",
+        "archetype": "vintage_bulb"
+      },
+      "identify": {},
+      "services": [],
+      "type": "device"
+    }
+  ]
+}

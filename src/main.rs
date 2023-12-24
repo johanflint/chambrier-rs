@@ -2,6 +2,7 @@ use std::error::Error;
 
 use crate::hue::client::HueClient;
 
+mod event;
 mod hue;
 mod model;
 

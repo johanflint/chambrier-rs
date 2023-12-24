@@ -1,5 +1,6 @@
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
+use std::collections::HashMap;
 
 // Names come from the [Hue API v2](https://developers.meethue.com/develop/hue-api-v2/api-reference/#resource).
 
@@ -14,10 +15,37 @@ impl DevicesResponse {
         self.errors.iter().collect()
     }
 
+    pub fn take_errors(self) -> Vec<HueError> {
+        self.errors
+    }
+
     pub fn data(&self) -> Vec<&Resource> {
         self.data
             .iter()
             .filter(|r| !matches!(r, Resource::Unknown))
+            .collect()
+    }
+
+    pub fn devices(&self) -> Vec<&DeviceGet> {
+        self.data
+            .iter()
+            .filter(|r| matches!(r, Resource::Device(..)))
+            .map(|r| match r {
+                Resource::Device(device) => device,
+                _ => panic!("matched a resource that is not a device"),
+            })
+            .collect()
+    }
+
+    pub fn devices_map(&self) -> HashMap<String, &Resource> {
+        self.data
+            .iter()
+            .map(|resource| match resource {
+                Resource::Device(device) => (device.id.clone(), resource),
+                Resource::Light(light) => (light.id.clone(), resource),
+                Resource::Button(button) => (button.id.clone(), resource),
+                Resource::Unknown => ("".to_string(), &Resource::Unknown),
+            })
             .collect()
     }
 }
@@ -46,10 +74,34 @@ pub(crate) struct DeviceGet {
     services: Vec<ResourceIdentifierGet>,
 }
 
+impl DeviceGet {
+    pub fn id(&self) -> &str {
+        &self.id
+    }
+
+    pub fn metadata(&self) -> &DeviceMetadata {
+        &self.metadata
+    }
+
+    pub fn product_data(&self) -> &ProductData {
+        &self.product_data
+    }
+
+    pub fn services(&self) -> Vec<&ResourceIdentifierGet> {
+        self.services.iter().collect()
+    }
+}
+
 #[derive(Deserialize, Debug)]
 pub(crate) struct DeviceMetadata {
     archetype: Archetype,
     name: String,
+}
+
+impl DeviceMetadata {
+    pub fn name(&self) -> &str {
+        &self.name
+    }
 }
 
 #[derive(Deserialize, Debug)]
@@ -60,6 +112,32 @@ pub(crate) struct ProductData {
     product_archetype: Archetype,
     certified: bool,
     software_version: String,
+}
+
+impl ProductData {
+    pub(crate) fn model_id(&self) -> &str {
+        &self.model_id
+    }
+
+    pub(crate) fn manufacturer_name(&self) -> &str {
+        &self.manufacturer_name
+    }
+
+    pub(crate) fn product_name(&self) -> &str {
+        &self.product_name
+    }
+
+    pub(crate) fn product_archetype(&self) -> &Archetype {
+        &self.product_archetype
+    }
+
+    pub(crate) fn certified(&self) -> bool {
+        self.certified
+    }
+
+    pub(crate) fn software_version(&self) -> &str {
+        &self.software_version
+    }
 }
 
 #[derive(Deserialize, Debug)]
@@ -75,6 +153,10 @@ pub(crate) struct LightGet {
 }
 
 impl LightGet {
+    pub fn on(&self) -> bool {
+        self.on.on
+    }
+
     pub fn dimming(&self) -> Option<&Diming> {
         self.dimming.as_ref()
     }
@@ -212,7 +294,16 @@ pub(crate) struct ResourceIdentifierGet {
     rtype: ResourceType,
 }
 
-#[derive(Deserialize, PartialEq, Debug)]
+impl ResourceIdentifierGet {
+    pub fn rid(&self) -> &str {
+        &self.rid
+    }
+    pub fn rtype(&self) -> ResourceType {
+        self.rtype.clone()
+    }
+}
+
+#[derive(Deserialize, Copy, Clone, PartialEq, Debug)]
 #[serde(rename_all = "snake_case")]
 pub(crate) enum ResourceType {
     AuthV1,
