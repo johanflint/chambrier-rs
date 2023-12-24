@@ -1,6 +1,6 @@
 use std::error::Error;
 
-use crate::hue::client::HueClient;
+use crate::hue::{HueClient, HueObserver};
 
 mod event;
 mod hue;
@@ -10,7 +10,8 @@ mod model;
 async fn main() -> Result<(), Box<dyn Error>> {
     println!("Retrieving devices from Philips Hue...");
     let client = HueClient::new()?;
-    let response = client.fetch_devices().await?;
+    let observer = HueObserver::new(client);
+    let response = observer.observe().await?;
     eprintln!("response = {:#?}", response);
     Ok(())
 }

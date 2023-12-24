@@ -9,7 +9,7 @@ use crate::hue::devices_response::{
 };
 use crate::model::{BooleanProperty, Device, DeviceType, Property, PropertyType};
 
-struct HueObserver {
+pub struct HueObserver {
     client: HueClient,
 }
 
