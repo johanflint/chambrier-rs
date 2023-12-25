@@ -18,7 +18,7 @@ impl HueClient {
         })
     }
 
-    pub async fn fetch_devices(&self) -> Result<DevicesResponse, HueClientError> {
+    pub(in crate::hue) async fn fetch_devices(&self) -> Result<DevicesResponse, HueClientError> {
         let response = self
             .client
             .get(format!("https://{}/clip/v2/resource", self.endpoint))
